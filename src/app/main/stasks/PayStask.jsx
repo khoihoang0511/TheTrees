@@ -91,7 +91,7 @@ const PayStask = ({ route }) => {
     });
     setlistexpress(updatedExpress);
   }
-
+//lọc phương thức giao hàng dược chọn
   useEffect(() => {
     const chooseExpressproduct = listexpress.filter(item => item.status == true);
     setsendExpress(chooseExpressproduct);
@@ -114,7 +114,7 @@ const PayStask = ({ route }) => {
     });
     setpay(updatedpay);
   };
-
+//lọc phương thức thanh toán dược chọn
   useEffect(() => {
     const selectedPay = pay.filter(item => item.selected == true);
     setsendPay(selectedPay)

@@ -15,7 +15,7 @@ const Paynextstask = ({route}) => {
 
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
-  console.log(appState.modalOrderSuccess)
+
 
   const [numberatm, setnumberatm] = useState();
   const [name, setname] = useState()

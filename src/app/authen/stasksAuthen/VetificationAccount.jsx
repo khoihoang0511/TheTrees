@@ -1,4 +1,4 @@
-import { Dimensions, Image, KeyboardAvoidingView, Pressable, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, KeyboardAvoidingView, Pressable, ScrollView, StatusBar, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../style/Mystyle'
 import Apptextinput from '../../common/Login/Apptextinput';
@@ -6,7 +6,7 @@ import Button from '../../common/Login/Button';
 import Dontuser from '../../common/Login/Dontuser';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { register } from "../../../redux/API/UserAPI";
 
 const VetificationRegister = () => {
@@ -16,14 +16,18 @@ const VetificationRegister = () => {
 
 
 
-    const registerapp = async() => {
+    const registerapp = async () => {
         try {
-            const code =  vetifacation;
+            const code = vetifacation;
             const result = await dispatch(register(code))
-            console.log(result.payload)
+            if (result.payload) {
+                ToastAndroid.show("Đăng ký thành công", ToastAndroid.LONG);
+            } else {
+                ToastAndroid.show("Mã xác nhận không hợp lệ", ToastAndroid.LONG);
+            }
 
         } catch (error) {
-            console.log("Error vetification-------------------------- :",error)
+            console.log("Error vetification-------------------------- :", error)
         }
     }
 
@@ -76,7 +80,7 @@ const VetificationRegister = () => {
 
             <StatusBar translucent backgroundColor='rgba(0,0,0,0)' />
             <Image style={{ width: '100%', height: 230 }} source={require('../../../resources/img/registerimgbackground.png')} />
-            <View style={{marginTop:70}}>
+            <View style={{ marginTop: 70 }}>
                 <Text style={getfonttille()}>Xác thực tài khoản</Text>
                 <Text style={getfonttille2()}>Vui lòng kiểm tra email</Text>
                 <Apptextinput

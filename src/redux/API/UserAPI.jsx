@@ -9,13 +9,11 @@ export const login = createAsyncThunk(
         try {
             const response = await AxiosInstance().post("users/login", data);
             if (response.status == true) {
-                // console.log(response);
                 return response.data;
             }
         } catch (error) {
-            // console.log("lõi login :"+error)
+            console.log("lõi login :"+error)
             return rejectWithValue(false)
-
         }
     }
 )
@@ -26,11 +24,10 @@ export const vetificationemail = createAsyncThunk(
         try {
             const response = await AxiosInstance().post("users/register/vetification", data);
             if (response.status == true) {
-                console.log(response.status)
                 return true;
             }
         } catch (error) {
-            console.log(error)
+            console.log("lỗi vetification : "+ error)
             return rejectWithValue(false)
         }
     }
@@ -47,7 +44,7 @@ export const register = createAsyncThunk(
                 return response.data;
             }
         } catch (error) {
-            console.log(error)
+            console.log("lỗi register :"+error)
             return rejectWithValue(false)
         }
     }

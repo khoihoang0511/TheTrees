@@ -19,7 +19,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const appState = useSelector(state => state.app)
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         try {
             if (!email || !password) {
                 ToastAndroid.show("Vui lòng nhập đầy đủ thông tin", ToastAndroid.LONG);
@@ -41,7 +41,12 @@ const Login = () => {
             }
             
             const body = { email, password };
-            dispatch(login(body));
+            const result = await dispatch(login(body));
+            if(result.payload){
+                ToastAndroid.show("Đăng nhập thành công", ToastAndroid.LONG);
+            }else{
+                ToastAndroid.show("Tài khoản mật khẩu không đúng", ToastAndroid.LONG);
+            }
 
         } catch (error) {
             console.log("Error login-------------------------- :", error)

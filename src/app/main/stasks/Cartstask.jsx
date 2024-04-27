@@ -62,6 +62,20 @@ const Cartstask = () => {
     }
   }
 
+  const updatequantityAPI = async (product_id,status) => {
+    try {
+      var body = {
+        id_User: id_User,
+        product_id: product_id,
+        status: status
+      }
+      const response = await AxiosInstance().post(`/cart/updatequantity`, body);
+      console.log(response)
+    } catch (error) {
+      console.log("lỗi listtree ---------------", error)
+    }
+  }
+
 
   // Đếm số lượng các item đã được chọn
   // const countSelectedItems = () => {
@@ -92,7 +106,7 @@ const Cartstask = () => {
 
   const updatequantity = (product_id, status) => {
     const newquantity = listcart.map((item) => {
-      if (status == "increated") {
+      if (status == "decrease") {
         if (item.product_id == product_id) {
           if (item.quantity >= 2) {
             return { ...item, quantity: item.quantity - 1 }
@@ -108,6 +122,7 @@ const Cartstask = () => {
     })
     setlistcart(newquantity);
     dispatch(savecart(newquantity))
+    updatequantityAPI(product_id, status)
   }
   let sum = 0;
   listcart.map((item) => {
@@ -173,11 +188,11 @@ const Cartstask = () => {
                 </Text>
               </IntlProvider>
               <View style={myStyle.viewquantitycart}>
-                <Pressable onPress={() => updatequantity(item.product_id, "increated")}>
+                <Pressable onPress={() => updatequantity(item.product_id, "decrease")}>
                   <Image style={{ height: 20, width: 20 }} source={require('../../../resources/img/reduce.png')} />
                 </Pressable>
                 <Text style={[myStyle.textnamesuccess, { marginHorizontal: "10%" }]}>{item.quantity}</Text>
-                <Pressable onPress={() => updatequantity(item.product_id, "uncreated")}>
+                <Pressable onPress={() => updatequantity(item.product_id, "increase")}>
                   <Image style={{ height: 20, width: 20 }} source={require('../../../resources/img/increase.png')} />
                 </Pressable>
                 <View style={myStyle.viewdeletecart}>

@@ -5,7 +5,6 @@ import Header from '../../common/Detaults/Header'
 import { useNavigation } from '@react-navigation/native'
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { addOrder } from '../../../redux/Reducer'
 import AxiosInstance from '../../../helpers/AxiosInstance'
 
 const Ordersuccess = ({ route }) => {
@@ -20,65 +19,68 @@ const Ordersuccess = ({ route }) => {
 
     //lấy ra các sản phẩm có checked là true là những sản phẩm được chọn trong giỏ hàng
     // và add product vào thông báo
-    const getcart_addnotification = () => {
+    const getcart_addnotification = async () => {
+
         var data = appState.user.carts;
         const orderproduct = data.filter(item => item.checked == true);
         setproduct(orderproduct)
-        console.log(itemExpress[0].nameexpress)
-        console.log(itemPay[0].name)
-        console.log(pricepay[0].sum)
 
         const date = new Date();
         const dayOfWeekNumber = date.getDay();
         const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
         const dayOfWeekName = daysOfWeek[dayOfWeekNumber];
 
-        const dayOfMonth  = date.getDate()
+        const dayOfMonth = date.getDate()
         const month = date.getMonth();
         const year = date.getFullYear()
-        item = {
-            id: Math.floor(Math.random() * 100000000000000),
-            date:dayOfWeekName,
-            day:dayOfMonth,
-            month:month + 1,
-            year:year,
-            status:"Đang giao",
-            profilename:listprofile.name,
-            profileemail:listprofile.email,
-            profileaddress:listprofile.address,
-            profilephone:listprofile.phone,
-            expressname:itemExpress[0].nameexpress,
-            expresstime:itemExpress[0].timeexpress,
-            namepay:itemPay[0].name,
-            pricepaysum:pricepay[0].sum,
-            pricepayExpress:pricepay[0].priceExpress,
-            products:[...orderproduct],
+
+        const addnotification = async () => {
+            try {
+                var body = {
+                    id_User: id_User,
+                    date: dayOfWeekName,
+                    day: dayOfMonth,
+                    month: month + 1,
+                    year: year,
+                    status: "Đang giao",
+                    profilename: listprofile.name,
+                    profileemail: listprofile.email,
+                    profileaddress: listprofile.address,
+                    profilephone: listprofile.phone,
+                    expressname: itemExpress[0].nameexpress,
+                    expresstime: itemExpress[0].timeexpress,
+                    namepay: itemPay[0].name,
+                    pricepaysum: pricepay[0].sum,
+                    pricepayExpress: pricepay[0].priceExpress,
+                    products: [...orderproduct],
+                }
+                await AxiosInstance().post(`/notification/addnotification`, body);
+            } catch (error) {
+                console.log("lỗi addnotification ---------------", error)
+            }
         }
-        //thêm dữ liệu vào thông báo
-        dispatch(addOrder(item))
-
-        // xóa sản phẩm trong cart 
-
-        var listIDproduct=[];
-        orderproduct.map((item)=>{
-            listIDproduct.push(item.product_id)
-        })
+        addnotification()
 
         const deletecart = async () => {
             try {
-              var body = {
-                product_id: listIDproduct,
-              }
-    
-              const response = await AxiosInstance().post(`/cart/deleteproductcart?id_User=${id_User}`, body);
-
-   
+                // xóa sản phẩm trong cart 
+                var listIDproduct = [];
+                orderproduct.map((item) => {
+                    listIDproduct.push(item.product_id)
+                })
+                var body = {
+                    product_id: listIDproduct,
+                }
+                const response = await AxiosInstance().post(`/cart/deleteproductcart?id_User=${id_User}`, body);
             } catch (error) {
-              console.log("lỗi listtree ---------------", error)
+                console.log("lỗi deletecart ---------------", error)
             }
-          }
-          deletecart()
+        }
+        deletecart()
     }
+
+
+
 
 
 
@@ -86,13 +88,13 @@ const Ordersuccess = ({ route }) => {
         getcart_addnotification()
     }, [])
 
-  //giới hạn ký tự 
-  const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.slice(0, maxLength) + '...';
-    }
-    return str;
-  };
+    //giới hạn ký tự 
+    const truncateString = (str, maxLength) => {
+        if (str.length > maxLength) {
+            return str.slice(0, maxLength) + '...';
+        }
+        return str;
+    };
 
     const renderItem = (item) => {
         const name = truncateString(item.name, 15);
@@ -177,7 +179,7 @@ const Ordersuccess = ({ route }) => {
                         </View>
                     </View>
                 </View>
-                <View style={[myStyle.viewallorder,{marginBottom:20}]}>
+                <View style={[myStyle.viewallorder, { marginBottom: 20 }]}>
                     <View style={[myStyle.viewsuccessprice, { marginTop: 20 }]}>
                         <Text style={myStyle.texttitlepay}>Chờ thanh toán</Text>
                         <IntlProvider locale="vi">
