@@ -16,10 +16,12 @@ const VetificationRegister = () => {
 
 
 
-    const registerapp = () => {
+    const registerapp = async() => {
         try {
             const code =  vetifacation;
-            dispatch(register(code))
+            const result = await dispatch(register(code))
+            console.log(result.payload)
+
         } catch (error) {
             console.log("Error vetification-------------------------- :",error)
         }

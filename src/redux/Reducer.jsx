@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, vetificationemail, register } from "./API/UserAPI";
+import { ToastAndroid } from "react-native";
 
 
 
 const initialState = {
     user: null,
     modalcart: false,
-    modalOrderSuccess: false
+    modalOrderSuccess: false,
+
 
 
 
@@ -47,9 +49,12 @@ const appSlice = createSlice({
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.user = action.payload;
+                console.log("login success");
+                ToastAndroid.show("Đăng nhâp thành công", ToastAndroid.LONG);
             })
             .addCase(login.rejected, (state, action) => {
                 console.log("login rejected");
+                ToastAndroid.show("Tài khoản mật khẩu không đúng", ToastAndroid.LONG);
             })
             //------------------------------- check email
             .addCase(vetificationemail.pending, (state, action) => {
@@ -59,7 +64,7 @@ const appSlice = createSlice({
                 console.log("Vetification success")
             })
             .addCase(vetificationemail.rejected, (state, action) => {
-                console.log("vetificationemail rejected");
+                console.log("Vetification rejected");
             })
             //--------------------------------- đăng ký
             .addCase(register.pending, (state, action) => {
@@ -67,6 +72,7 @@ const appSlice = createSlice({
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.user = action.payload;
+                console.log("register success");
             })
             .addCase(register.rejected, (state, action) => {
                 console.log("register rejected");
@@ -74,6 +80,6 @@ const appSlice = createSlice({
         //------------------------------------
     }
 });
-export const { Updatemodalcart, savecart, UpdatemodalOrderSuccess, addOrder, logout,updateaddress,updatephone } = appSlice.actions;
+export const { Updatemodalcart, savecart, UpdatemodalOrderSuccess, addOrder, logout, updateaddress, updatephone } = appSlice.actions;
 export default appSlice.reducer;
 

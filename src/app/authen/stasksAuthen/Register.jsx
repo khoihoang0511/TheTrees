@@ -1,15 +1,16 @@
-import { Image, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../style/Mystyle'
 import Apptextinput from '../../common/Login/Apptextinput';
 import Button from '../../common/Login/Button';
 import Dontuser from '../../common/Login/Dontuser';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { vetificationemail } from "../../../redux/API/UserAPI";
 
 const Register = () => {
-  
+
+  const appState = useSelector(state => state.app)
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -21,15 +22,48 @@ const Register = () => {
   const [eyeConfirm, seteyeConfirm] = useState(true);
 
 
-  const VetificationRegister = () => {
+  const VetificationRegister = async () => {
     try {
+
+      if (!email || !password || !name || !confirmpass) {
+        ToastAndroid.show("Vui lòng nhập đầy đủ thông tin", ToastAndroid.LONG);
+        return false;
+      }
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const checkmail = emailRegex.test(email);
+      if (!checkmail) {
+        ToastAndroid.show("Email không hợp lệ", ToastAndroid.LONG);
+        return false;
+      }
+
+      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+      const checkpassword = passwordRegex.test(password);
+      if (!checkpassword) {
+        ToastAndroid.show("Mật khẩu phải bao gồm chữ số và ký tự đặt biệt", ToastAndroid.LONG);
+        return false;
+      }
+
+      if (password.toString() !== confirmpass.toString()) {
+        ToastAndroid.show("Xác nhận mật khẩu không đúng", ToastAndroid.LONG);
+        return false;
+      }
+
       const body = { email, password, name };
-      dispatch(vetificationemail(body));
-      navigation.navigate('VetificationAccount');
+      const result = await dispatch(vetificationemail(body));
+      if (result.payload) {
+        navigation.navigate("VetificationAccount");
+      }else{
+        ToastAndroid.show("Email đã tồn tại", ToastAndroid.LONG);
+      }
+
+
     } catch (error) {
       console.log("Error register-------------------------- :", error)
     }
   }
+
+
 
   const getfonttille = () => {
     return {

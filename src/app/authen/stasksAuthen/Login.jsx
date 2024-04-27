@@ -1,4 +1,4 @@
-import { Image, ImageBackground, KeyboardAvoidingView, KeyboardAvoidingViewBase, Platform, Pressable, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ImageBackground, KeyboardAvoidingView, KeyboardAvoidingViewBase, Platform, Pressable, ScrollView, StatusBar, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../style/Mystyle'
 import Appstatusbar from '../../common/Login/Appstatusbar'
@@ -6,7 +6,7 @@ import Apptextinput from '../../common/Login/Apptextinput'
 import Saveuser from '../../common/Login/Saveuser'
 import Button from '../../common/Login/Button'
 import Dontuser from '../../common/Login/Dontuser'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from "../../../redux/API/UserAPI";
 
 
@@ -17,14 +17,34 @@ const Login = () => {
     const [save, setsave] = useState(false)
 
     const dispatch = useDispatch();
-    const appState = useSelector(state=>state.app)
+    const appState = useSelector(state => state.app)
 
-    const handleLogin=()=>{
+    const handleLogin = () => {
         try {
-            const body = {email,password};
-            dispatch(login(body))
+            if (!email || !password) {
+                ToastAndroid.show("Vui lòng nhập đầy đủ thông tin", ToastAndroid.LONG);
+                return false;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const checkmail = emailRegex.test(email);
+            if (!checkmail) {
+                ToastAndroid.show("Email không hợp lệ", ToastAndroid.LONG);
+                return false;
+            }
+
+            const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+            const checkpassword = passwordRegex.test(password);
+            if (!checkpassword) {
+                ToastAndroid.show("Mật khẩu phải bao gồm chữ số và ký tự đặt biệt", ToastAndroid.LONG);
+                return false;
+            }
+            
+            const body = { email, password };
+            dispatch(login(body));
+
         } catch (error) {
-            console.log("Error login-------------------------- :",error)
+            console.log("Error login-------------------------- :", error)
         }
     }
 
@@ -53,7 +73,7 @@ const Login = () => {
             ...styles.fonttille,
             fontSize: 30,
             color: 'black',
-            alignSelf:"center"
+            alignSelf: "center"
 
         }
     }
@@ -115,12 +135,12 @@ const Login = () => {
             ...styles.fonttille,
             color: 'white',
             fontSize: 16,
-            alignSelf:"center"
+            alignSelf: "center"
 
         }
     }
-    const button =()=>{
-        return{
+    const button = () => {
+        return {
             ...styles.button
         }
     }
@@ -194,7 +214,7 @@ const Login = () => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                <View style={[styles.flex_1,{backgroundColor:'white'}]}>
+                <View style={[styles.flex_1, { backgroundColor: 'white' }]}>
                     <StatusBar translucent backgroundColor='rgba(0,0,0,0)' />
                     <Image
                         style={{ width: '100%', height: 330 }}
@@ -252,7 +272,7 @@ const Login = () => {
                         mystyle={{
 
                             textbutton: gettextbutton(),
-                            button :button()
+                            button: button()
                         }}
                         title={'Đăng nhập'}
                         handle={handleLogin}
@@ -271,7 +291,7 @@ const Login = () => {
                     <Dontuser
                         user={'Bạn không có tài khoản'}
                         newuser={'Tạo tài khoản'}
-                        
+
                         mystyle={{
                             row: textnewaccount(),
                             text: textdontaccount(),
