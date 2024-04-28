@@ -34,10 +34,13 @@ const Ordersuccess = ({ route }) => {
         const month = date.getMonth();
         const year = date.getFullYear()
 
+        const randomId = Math.floor(Math.random() * 1000000000000000);
+
         const addnotification = async () => {
             try {
                 var body = {
                     id_User: id_User,
+                    id: randomId,
                     date: dayOfWeekName,
                     day: dayOfMonth,
                     month: month + 1,

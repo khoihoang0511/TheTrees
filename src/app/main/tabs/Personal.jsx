@@ -37,7 +37,7 @@ const Personal = () => {
           <Text style={Mystyle.textpressableprofile}>Cẩm nang trồng cây</Text>
         </Pressable>
         <Pressable style={Mystyle.pressableprofile} onPress={()=>navigation.navigate("Transactionhistory")}>
-          <Text style={Mystyle.textpressableprofile}>Lịch sử giao dịch</Text>
+          <Text style={Mystyle.textpressableprofile}>Lịch sử đơn hàng</Text>
         </Pressable>
         <Pressable style={Mystyle.pressableprofile}>
           <Text style={Mystyle.textpressableprofile}>Q & A</Text>

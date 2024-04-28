@@ -9,32 +9,22 @@ import { addOrder } from '../../../redux/Reducer'
 import AxiosInstance from '../../../helpers/AxiosInstance'
 
 const DetailtTransaction = ({ route }) => {
+    const {item} = route.params
     const navigation = useNavigation()
     const [product, setproduct] = useState()
     const appState = useSelector(state => state.app);
     const dispatch = useDispatch();
-    const [listinfornation, setlistinfornation] = useState([])
 
 
 
-    const getdata = () => {
-        try {
-            const data = appState.user.notification;
-            const dataproduct = appState.user.notification[0].products
-            setlistinfornation(data[0]) //ngày  //data[0] mảng bị bọc ngoài
-            setproduct(dataproduct); //sản phẩm  //dataproduct  item.item
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
 
     useEffect(() => {
-        getdata()
+        setproduct(item.products)
     }, [appState.user.notification])
 
-    console.log(listinfornation)
-    console.log(product)
+
 
 
 
@@ -98,23 +88,23 @@ const DetailtTransaction = ({ route }) => {
                                     <View style={myStyle.viewtitlenextpay}>
                                         <Text style={myStyle.texttitlepay}>Thông tin khách hàng</Text>
                                     </View>
-                                    <Text style={myStyle.textnamenextpay}>{listinfornation.profilename}</Text>
-                                    <Text style={myStyle.textnamenextpay}>{listinfornation.profileemail}</Text>
-                                    <Text style={myStyle.textnamenextpay}>{listinfornation.profileaddress}</Text>
-                                    <Text style={myStyle.textnamenextpay}>{listinfornation.profilephone}</Text>
+                                    <Text style={myStyle.textnamenextpay}>{item.profilename}</Text>
+                                    <Text style={myStyle.textnamenextpay}>{item.profileemail}</Text>
+                                    <Text style={myStyle.textnamenextpay}>{item.profileaddress}</Text>
+                                    <Text style={myStyle.textnamenextpay}>{item.profilephone}</Text>
                                 </View>
                                 <View>
                                     <View style={[myStyle.viewtitlenextpay, { marginBottom: 15 }]}>
                                         <Text style={myStyle.texttitlepay}>Phương thức vận chuyển</Text>
                                     </View>
-                                    <Text style={myStyle.textexpected}>{listinfornation.expressname}</Text>
-                                    <Text style={[myStyle.textexpected, { marginTop: 5 }]}>({listinfornation.expresstime})</Text>
+                                    <Text style={myStyle.textexpected}>{item.expressname}</Text>
+                                    <Text style={[myStyle.textexpected, { marginTop: 5 }]}>({item.expresstime})</Text>
                                 </View>
                                 <View>
                                     <View style={[myStyle.viewtitlenextpay, { marginBottom: 15 }]}>
                                         <Text style={myStyle.texttitlepay}>Phương thức vận chuyển</Text>
                                     </View>
-                                    <Text style={myStyle.textexpected}>{listinfornation.namepay}</Text>
+                                    <Text style={myStyle.textexpected}>{item.namepay}</Text>
                                 </View>
                                 <View>
                                     <View style={[myStyle.viewtitlenextpay, { marginBottom: 15 }]}>
@@ -140,7 +130,7 @@ const DetailtTransaction = ({ route }) => {
                             <IntlProvider locale="vi">
                                 <Text style={myStyle.texttitlepay}>
                                     <FormattedNumber
-                                        value={parseInt(listinfornation.pricepaysum) + parseInt(listinfornation.pricepayExpress)}
+                                        value={parseInt(item.pricepaysum) + parseInt(item.pricepayExpress)}
                                         style="currency"
                                         currency="VND"
                                         currencyDisplay="symbol"

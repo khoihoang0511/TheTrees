@@ -14,7 +14,6 @@ import Cartstask from './stasks/Cartstask';
 import Detaltstask from './stasks/Detaltstask';
 import PayStask from './stasks/PayStask';
 import Profilestask from './stasks/Profilestask';
-import Categorystask from './stasks/Categorystask';
 import Updateprofilestask from './stasks/Updateprofilestask';
 import Paynextstask from './stasks/Paynextstask';
 import Ordersuccess from './stasks/Ordersuccess';
@@ -23,6 +22,9 @@ import Detalthangbook from './stasks/Detalthangbook';
 import Searchstask from './stasks/Searchstask';
 import Transactionhistory from './stasks/Transactionhistory';
 import DetailtTransaction from './stasks/DetailtTransaction';
+import Categorytree from './stasks/Categorytree';
+import Categorysaccessory from './stasks/Categorysaccessory';
+import Categorypots from './stasks/Categorypots';
 
 
 const MainStacks = createNativeStackNavigator();
@@ -73,7 +75,6 @@ const MainStackNavigation = () => {
         <MainStacks.Navigator screenOptions={screenOptions}>
             <MainStacks.Screen name='MainTabs' component={MainTabsNavigation} />
             <MainStacks.Screen name="Cartstask" component={Cartstask} />
-            <MainStacks.Screen name="Categorystask" component={Categorystask} />
             <MainStacks.Screen name="Updateprofilestask" component={Updateprofilestask} />
             <MainStacks.Screen name="PayStask" component={PayStask} />
             <MainStacks.Screen name="Detaltstask" component={Detaltstask} />
@@ -85,6 +86,9 @@ const MainStackNavigation = () => {
             <MainStacks.Screen name="Searchstask" component={Searchstask} />
             <MainStacks.Screen name="Transactionhistory" component={Transactionhistory} />
             <MainStacks.Screen name="DetailtTransaction" component={DetailtTransaction} />
+            <MainStacks.Screen name="Categorytree" component={Categorytree} />
+            <MainStacks.Screen name="Categorysaccessory" component={Categorysaccessory} />
+            <MainStacks.Screen name="Categorypots" component={Categorypots} />
         </MainStacks.Navigator>
     )
 }
