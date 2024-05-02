@@ -216,9 +216,9 @@ const Home = (props) => {
               keyExtractor={item => item._id}
               numColumns={2}
             />
-            <View style={Mystyle.viewwatchadd}>
+            <TouchableOpacity style={Mystyle.viewwatchadd} onPress={()=>navigation.navigate("Categorypots")}>
               <Text style={Mystyle.textwatchadd}>Xem thêm chậu cây</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View>
@@ -234,9 +234,9 @@ const Home = (props) => {
               keyExtractor={item => item._id}
               numColumns={2}
             />
-            <View style={Mystyle.viewwatchadd}>
+            <TouchableOpacity style={Mystyle.viewwatchadd} onPress={()=>navigation.navigate("Categorysaccessory")}>
               <Text style={Mystyle.textwatchadd}>Xem thêm phụ kiện</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View>

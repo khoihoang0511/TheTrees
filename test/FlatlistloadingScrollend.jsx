@@ -1,31 +1,37 @@
 import React, { useState } from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
-const FlatlistScrollEnd = () => {
+const FlatlistloadingScrollend = () => {
     const [data, setData] = useState(dataproducts); // Dữ liệu của bạn
     const [visibleDataCount, setVisibleDataCount] = useState(5); // Số lượng mục hiển thị ban đầu
-    const [first, setfirst] = useState(0)
+    const [loading, setLoading] = useState(false); // Trạng thái loading
+
     const renderDataItem = ({ item }) => {
         return (
             <View>
-                {/* Hiển thị nội dung của mỗi mục ở đây */}
                 <Text style={{ fontSize: 50 }}>{item.name}</Text>
             </View>
         );
     };
 
     const handleLoadMore = () => {
-        setVisibleDataCount(visibleDataCount + 5); // Tăng số lượng mục hiển thị lên
+        // Khi bắt đầu tải dữ liệu mới, đặt trạng thái loading thành true
+        console.log("start loading")
+        setLoading(true);
+       
+        // Thêm logic tải dữ liệu mới ở đây
 
+        // Giả sử sau khi tải xong, bạn tăng số lượng mục hiển thị
+        setVisibleDataCount(visibleDataCount + 5);
+
+        // Khi dữ liệu mới được tải xong, đặt trạng thái loading thành false
+        setLoading(false);
+        console.log("end loading")
     };
 
     const handleEndReached = () => {
-        setfirst(first+1);
-        console.log(first)
-        handleLoadMore();
-        console.log('end') // Gọi hàm xử lý load thêm khi scroll tới cuối danh sách
+        handleLoadMore(); // Gọi hàm xử lý load thêm khi scroll tới cuối danh sách
     };
-    
 
     return (
         <View>
@@ -35,6 +41,13 @@ const FlatlistScrollEnd = () => {
                 keyExtractor={(item, index) => index.toString()}
                 onEndReached={handleEndReached} // Callback khi scroll tới cuối danh sách
                 onEndReachedThreshold={0.1} // Đặt ngưỡng để gọi callback, ví dụ 0.1 sẽ gọi khi scroll đến 90% cuối danh sách
+                ListFooterComponent={() => (
+                    loading ? (
+                        <View style={{ padding: 10 }}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </View>
+                    ) : null
+                )}
             />
             <TouchableOpacity onPress={handleLoadMore}>
                 <Text>Xem thêm</Text>
@@ -43,7 +56,7 @@ const FlatlistScrollEnd = () => {
     );
 };
 
-export default FlatlistScrollEnd;
+export default FlatlistloadingScrollend;
 
 var dataproducts = [
     {
