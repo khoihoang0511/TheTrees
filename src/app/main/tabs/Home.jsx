@@ -21,7 +21,7 @@ const Home = (props) => {
     const idcategory = '6606b733ccf861171c336d81';
     try {
       setRefreshing(true)
-      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${8}`);
+      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${10}`);
       if (response.status == true) {
         setlisttrees(response.data);
 
@@ -36,7 +36,7 @@ const Home = (props) => {
     const idcategory = '6606b733ccf861171c336d82';
     try {
       setRefreshing(true)
-      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${8}`);
+      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${10}`);
       if (response.status == true) {
         setlistpots(response.data);
 
@@ -51,7 +51,7 @@ const Home = (props) => {
     const idcategory = '6606b733ccf861171c336d83';
     try {
       setRefreshing(true)
-      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${8}`);
+      const response = await AxiosInstance().get(`/products/danh-muc?_id=${idcategory}&page=${1}&limit=${10}`);
       if (response.status == true) {
         setlistaccessory(response.data);
 
@@ -176,7 +176,7 @@ const Home = (props) => {
           </Pressable>
 
           <View style={viewtitle()}>
-            <Text style={title()}>Planta - toả sáng không gian nhà bạn</Text>
+            <Text style={title()}>Thetrees - toả sáng không gian nhà bạn</Text>
           </View>
           <TouchableOpacity style={viewnewproduct()}>
             <Text style={textnewproduct()}>Xem hàng mới về</Text>
@@ -198,9 +198,9 @@ const Home = (props) => {
             // refreshing={refreshing}
             // onRefresh={fetchproductstree}
             />
-            <View style={Mystyle.viewwatchadd}>
+            <TouchableOpacity style={Mystyle.viewwatchadd} onPress={()=>navigation.navigate("Categorytree")}>
               <Text style={Mystyle.textwatchadd}>Xem thêm cây trồng</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View>

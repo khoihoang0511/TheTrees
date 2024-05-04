@@ -9,23 +9,37 @@ import { addOrder } from '../../../redux/Reducer'
 import AxiosInstance from '../../../helpers/AxiosInstance'
 
 const DetailtTransaction = ({ route }) => {
-    const {item} = route.params
+    const { item } = route.params
     const navigation = useNavigation()
     const [product, setproduct] = useState()
-    const appState = useSelector(state => state.app);
-    const dispatch = useDispatch();
-
-
-
-
-
+    const [status, setstatus] = useState(item.status)
+    const appState = useSelector((state) => state.app);
+    const id_User = appState.user._id;
 
     useEffect(() => {
         setproduct(item.products)
-    }, [appState.user.notification])
+    })
 
 
+    const deleteorder = async () => {
+        try {
+            if (status == "Đang giao") {
+                const body = {
+                    id_User: id_User,
+                    id: item.id,
+                    status: "Đã hủy"
+                }
 
+                const response = await AxiosInstance().post(`/notification/update_status`, body);
+                if (response.status == true) {
+                    setstatus("Đã hủy")
+                    ToastAndroid.show("Hủy đơn thành công", ToastAndroid.LONG)
+                }
+            }
+        } catch (error) {
+            console.log("lỗi deleteorder ---------------", error)
+        }
+    }
 
 
 
@@ -74,9 +88,10 @@ const DetailtTransaction = ({ route }) => {
 
     return (
         <View style={[myStyle.flex_1, { backgroundColor: 'white' }]}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}>
-                <View >
+
+            <View style={{ flex: 1 }}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}>
                     <View>
                         <Header
                             name={'Chi tiết đơn hàng'}
@@ -116,7 +131,7 @@ const DetailtTransaction = ({ route }) => {
                                         data={product}
                                         renderItem={({ item }) => renderItem(item)}
                                         keyExtractor={(item) => item.product_id}
-                                    // style={{marginBottom:"4000"}}
+                                        style={{ marginBottom: '40%' }}
                                     />
 
 
@@ -124,30 +139,39 @@ const DetailtTransaction = ({ route }) => {
                             </View>
                         </View>
                     </View>
-                    <View style={[myStyle.viewallorder, { marginBottom: 20 }]}>
-                        <View style={[myStyle.viewsuccessprice, { marginTop: 20 }]}>
-                            <Text style={myStyle.texttitlepay}>Chờ thanh toán</Text>
-                            <IntlProvider locale="vi">
-                                <Text style={myStyle.texttitlepay}>
-                                    <FormattedNumber
-                                        value={parseInt(item.pricepaysum) + parseInt(item.pricepayExpress)}
-                                        style="currency"
-                                        currency="VND"
-                                        currencyDisplay="symbol"
-                                        minimumFractionDigits={0}
-                                    />
-                                </Text>
-                            </IntlProvider>
-                        </View>
-                        <Pressable style={myStyle.pressableyes} onPress={() => navigation.navigate("Hangbookstask")}>
-                            <Text style={myStyle.textpressableyes}>Xem cẩm nang trồng cây</Text>
-                        </Pressable>
-                        <Pressable style={myStyle.viewcancelcart} onPress={() => navigation.navigate('Home')}>
-                            <Text style={myStyle.textnamesuccess}>Quay về trang chủ</Text>
-                        </Pressable>
+                </ScrollView>
+                <View style={[myStyle.viewallorder, { position: "absolute", bottom: 0, marginBottom: 0 }]}>
+                    <View style={[myStyle.viewsuccessprice, { marginTop: 20 }]}>
+                        <Text style={myStyle.texttitlepay}>Thanh toán</Text>
+                        <IntlProvider locale="vi">
+                            <Text style={myStyle.texttitlepay}>
+                                <FormattedNumber
+                                    value={parseInt(item.pricepaysum) + parseInt(item.pricepayExpress)}
+                                    style="currency"
+                                    currency="VND"
+                                    currencyDisplay="symbol"
+                                    minimumFractionDigits={0}
+                                />
+                            </Text>
+                        </IntlProvider>
                     </View>
+                    <View style={[myStyle.viewsuccessprice, { marginTop: 20 }]}>
+                        <Text style={myStyle.texttitlepay}>Trạng thái</Text>
+                        {
+                            status == "Đang giao"
+                                ?
+                                <Text style={[myStyle.texttitlepay, { color: 'green', fontWeight: 'bold' }]}>{status}</Text>
+                                :
+                                <Text style={[myStyle.texttitlepay, { color: 'red', fontWeight: 'bold' }]}>{status}</Text>
+                        }
+                    </View>
+
+                    <Pressable style={myStyle.viewcancelcart} onPress={() => deleteorder()}>
+                        <Text style={myStyle.textnamesuccess}>Hủy đơn</Text>
+                    </Pressable>
                 </View>
-            </ScrollView>
+            </View>
+
         </View>
 
     )

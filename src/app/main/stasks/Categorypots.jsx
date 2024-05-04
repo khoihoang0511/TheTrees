@@ -35,7 +35,7 @@ const Categorypots = (props) => {
       setRefreshing(false);
     } catch (error) {
       setHasMoreData(false);
-      console.log("Lỗi khi tải dữ liệu:", error);
+      console.log("Trang cuối");
       setRefreshing(false);
     }
   };
@@ -70,7 +70,7 @@ const Categorypots = (props) => {
   const renderItem = ({ item }) => {
     const firstImage = item.images[0];
     return (
-      <Pressable onPress={() => navigation.navigate('Detaltstask', { _id: item._id })}>
+      <Pressable onPress={() => navigation.navigate('Detaltstask', _id = item._id)}>
         <View style={myStyle.viewproduct}>
           <Image style={myStyle.backgroundimgsp} resizeMode='contain' source={{ uri: firstImage }} />
           <Text style={myStyle.textnameproduct}>{item.name}</Text>

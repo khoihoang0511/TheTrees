@@ -31,7 +31,7 @@ const Categorysaccessory = (props) => {
       setRefreshing(false)
     } catch (error) {
       setHasMoreData(false)
-      console.log("lỗi listtree ---------------", error)
+      console.log("Trang cuối");
       setRefreshing(false)
     }
   }
