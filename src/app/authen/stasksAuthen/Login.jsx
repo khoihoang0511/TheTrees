@@ -244,12 +244,12 @@ const Login = () => {
                             }}
                             value={password}
                             onChangeText={setpassword}
-                            secureTextEntry={eye}
+                            secureTextEntry={!eye}
                         />
 
                         <TouchableOpacity style={geteye()} onPress={() => seteye(!eye)}>
                             {
-                                eye ?
+                                !eye ?
                                     <Image source={require('../../../resources/img/noteye.png')} />
                                     :
                                     <Image source={require('../../../resources/img/eye.png')} />
